@@ -1,4 +1,4 @@
 set dotenv-load
 
-julia:
-  julia julia/main.jl
+figure:
+  julia figure/main.jl
