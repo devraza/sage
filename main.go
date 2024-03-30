@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+  "strings"
 
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
@@ -15,6 +16,7 @@ import (
 var (
 	checkMark = lipgloss.NewStyle().Foreground(lipgloss.Color("42")).SetString("✓")
 	docStyle  = lipgloss.NewStyle().Margin(1, 2)
+  titleStyle = lipgloss.NewStyle().Bold(true)
 )
 
 type keyMap struct {
@@ -67,7 +69,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	s := "Pinging hosts...\n\n"
+	s := titleStyle.Render("Pinging hosts...") + strings.Repeat("\n", 2)
 	for _, address := range m.addresses {
 		_, err := probing.NewPinger(fmt.Sprintf("%s", address))
 		if err != nil {
