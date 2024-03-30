@@ -14,6 +14,7 @@ import (
 
 var (
 	checkMark = lipgloss.NewStyle().Foreground(lipgloss.Color("42")).SetString("✓")
+  docStyle = lipgloss.NewStyle().Margin(1, 2)
 )
 
 type keyMap struct {
@@ -75,7 +76,7 @@ func (m model) View() string {
     }
 
     helpView := m.help.View(m.keys)
-    return s + "\n" + helpView
+    return docStyle.Render(s + "\n" + helpView)
 }
 
 func main() {
