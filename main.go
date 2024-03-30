@@ -6,6 +6,8 @@ import (
 
     tea "github.com/charmbracelet/bubbletea"
     "github.com/charmbracelet/lipgloss"
+    "github.com/charmbracelet/bubbles/key"
+    "github.com/charmbracelet/bubbles/help"
 
     "github.com/prometheus-community/pro-bing"
 )
@@ -14,12 +16,34 @@ var (
 	checkMark = lipgloss.NewStyle().Foreground(lipgloss.Color("42")).SetString("✓")
 )
 
+type keyMap struct {
+	Quit  key.Binding
+}
+func (k keyMap) ShortHelp() []key.Binding {
+	return []key.Binding{k.Quit}
+}
+func (k keyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{
+		{k.Quit},
+	}
+}
+var keys = keyMap{
+	Quit: key.NewBinding(
+		key.WithKeys("q", "esc", "ctrl+c"),
+		key.WithHelp("q", "quit"),
+	),
+}
+
 type model struct {
+  keys       keyMap
+	help       help.Model
   addresses  []string
 }
 
 func initialModel() model {
 	return model{
+    keys:       keys,
+		help:       help.New(),
     addresses:  []string{"100.64.0.1", "100.64.0.2"},
 	}
 }
@@ -31,8 +55,8 @@ func (m model) Init() tea.Cmd {
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
     switch msg := msg.(type) {
     case tea.KeyMsg:
-        switch msg.String() {
-        case "ctrl+c", "q":
+        switch {
+        case key.Matches(msg, m.keys.Quit):
             return m, tea.Quit
         }
     }
@@ -49,8 +73,9 @@ func (m model) View() string {
           s += fmt.Sprintf("%s  %s\n", checkMark, address)
         }
     }
-    s += "\nPress q to quit.\n"
-    return s
+
+    helpView := m.help.View(m.keys)
+    return s + "\n" + helpView
 }
 
 func main() {
