@@ -1,0 +1,14 @@
+[package]
+name = "sage"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+owo-colors = "4.0.0"
+
+[profile.release]
+strip = true # Strip debug symbols
+opt-level = "z" # Optimise for size
+lto = true # Enable link type optimisation
+codegen-units = 1 # Reduce parallel code generation units
+panic = "abort" # Abort on panic!
