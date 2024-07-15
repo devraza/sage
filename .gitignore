@@ -1,5 +1,5 @@
 # Ignore user file
-sage.txt
+nurse/nurse.txt
 
 # Added by cargo
-/target
+nurse/target
