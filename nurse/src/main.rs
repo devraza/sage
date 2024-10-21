@@ -3,7 +3,7 @@ use std::fs;
 use std::process::Command;
 
 fn main() -> std::io::Result<()> {
-    let file: Vec<String> = fs::read_to_string("nurse.txt")
+    let file: Vec<String> = fs::read_to_string("../nurse.txt")
         .unwrap()
         .lines()
         .map(String::from)
