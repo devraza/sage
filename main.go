@@ -54,7 +54,7 @@ func (m model) Update(message tea.Msg) (tea.Model, tea.Cmd) {
     cmd := exec.Command("nc", "-zv", "devraza.giize.com", i, "-w", "1")
     out, _ := cmd.CombinedOutput()
 
-    if len(strings.Split(string(out), " ")) < 12 {
+    if len(strings.Split(string(out), " ")) == 8 {
       m.outputs = append(m.outputs, 1)
     } else {
       m.outputs = append(m.outputs, 0)
